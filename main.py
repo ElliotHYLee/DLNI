@@ -23,11 +23,10 @@ def train():
     model.fit(xTrainforLSTM, yTrainforLSTM,
               epochs=100, batch_size=2400, validation_split=0.4,
               verbose=1, shuffle=False)
-
-    # # Test
+    # Test
     pred = model.predict(xTrainforLSTM)
     print(pred.shape)
-    #print(pred)
+    # print(pred)
 
     rmse = np.sqrt((np.asarray((np.subtract(pred, yTrainforLSTM))) ** 2).mean())
     print("RSME: %f" % rmse)
@@ -36,11 +35,6 @@ def train():
     plt.plot(yTrainforLSTM, 'r-')
     plt.plot(pred, 'bo-')
     plt.show()
-
-    #print xTrain
-
-
-
 
 if __name__ =='__main__':
     train()
