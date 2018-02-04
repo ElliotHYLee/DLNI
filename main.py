@@ -1,46 +1,51 @@
 import numpy as np
 from PrepData import *
-from Opts import Opts
 from RNNModel import Model
+import tensorflow as tf
+import matplotlib.pyplot as plt
 
 def train():
     x, y = getData()
-    options = Opts()
-    # Get Model
-    model = Model(options).lstm_model()
+
+    print 'im here 1'
+
+    xTrain = x['train']
+    yTrain = y['train']
+    xVal = x['val']
+    yVal = y['val']
+
+    # print xTrain
+
+    xTrain = np.array(xTrain)
+    yTrain = np.array(yTrain)
+
+    xTrainforRNN = np.reshape(xTrain, (xTrain.shape[0], xTrain.shape[1], 1))
+    yTrainforRNN = yTrain
+    #yTrainforRNN = np.reshape(yTrain, (yTrain.shape[0], yTrain.shape[1], 1)) #return_sequences = true
+
+    xTrainforLSTM = np.reshape(xTrain, (xTrain.shape[0], 1, xTrain.shape[1]))
+    yTrainforLSTM = yTrain
+    #yTrainforLSTM = np.reshape(yTrain, (yTrain.shape[0], 1, yTrain.shape[1]))#return_sequences = true
+    print xTrain.shape
+    print yTrain.shape
 
     # Train
-    model.fit(x['train'], y['train'],
-              validation_set = (x['val'], y['val']),
-              show_metric=True,
-              batch_size=100,
-              n_epoch = 10)
+    model = Model().LSTMModel
+    model.fit(xTrainforLSTM, yTrainforLSTM, epochs=1000, batch_size=73, verbose=1,  shuffle=False, validation_split=0.2)
 
+    print 'im here 2'
     # Test
-    pred = model.predict( x['test'])
+    pred = model.predict(xTrainforLSTM)
     print(pred.shape)
-    print(pred)
+    #print(pred)
 
-    rmse = np.sqrt((np.asarray((np.subtract(pred, y['test']))) ** 2).mean())
-    score = mean_squared_error(pred, y['test'])
-    nmse = score / np.var(y['test']) # should be variance of original data and not data from fitted model, worth to double check
+    rmse = np.sqrt((np.asarray((np.subtract(pred, yTrainforLSTM))) ** 2).mean())
     print("RSME: %f" % rmse)
-    print("NSME: %f" % nmse)
-    print("MSE: %f" % score)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+    plt.figure()
+    plt.plot(yTrainforLSTM, 'ro')
+    plt.plot(pred, 'b')
+    plt.show()
 
 
 if __name__ =='__main__':
