@@ -13,18 +13,16 @@ class Model():
 
     def getLSTMModel(self):
         model = Sequential()
-        model.add(LSTM(10,
+        model.add(LSTM(20,
                   kernel_initializer='glorot_uniform',
                   recurrent_initializer='orthogonal',
                   activation=LeakyReLU(),
-                  return_sequences = False,
-                  input_shape=(1, 11)))
+                  return_sequences = True,
+                  input_shape=(11, 1)))
         model.add(Dense(10, kernel_initializer="uniform", activation=LeakyReLU()))
         model.add(Dense(10, kernel_initializer="uniform", activation=LeakyReLU()))
         model.add(Dense(1, kernel_initializer="uniform", activation='linear'))
-        #rmsprop = RMSprop(lr=0.01)
         model.compile(loss='mse', optimizer='adam')
-        #model.compile(loss='mse', optimizer = rmsprop)
         model.summary()
         return model
 
