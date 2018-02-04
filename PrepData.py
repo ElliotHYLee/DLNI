@@ -26,7 +26,7 @@ def genData():
     pos = np.zeros(4000)
     vel = np.zeros_like(pos)
     for i in range(1, 4000):
-        vel[i] = np.sin(i)*i
+        vel[i] = np.sin(i)*np.cos(i)*i*2
         pos[i] = pos[i-1] + vel[i]
     x = np.array(vel)
     y = np.array(pos)
@@ -35,7 +35,7 @@ def genData():
 def getData():
     x, y = genData()
     y = np.reshape(y, (-1, 1))
-    ts = 10
+    ts = 1000
     x = pd.DataFrame(x)
     x = rnnData(x, ts)
 

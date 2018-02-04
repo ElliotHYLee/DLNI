@@ -8,11 +8,11 @@ def train():
     x, y = getData()
 
     # print xTrain
-
-    xTrain = x
+    r, c = x.shape
+    xTrain = x + np.random.rand(r,c)*2
     yTrain = y
 
-    xTrainforLSTM = np.reshape(xTrain, (xTrain.shape[0], -1, 1))
+    xTrainforLSTM = np.reshape(xTrain, (xTrain.shape[0], 1, -1))
     yTrainforLSTM = yTrain
 
     print xTrainforLSTM.shape
@@ -21,7 +21,7 @@ def train():
     # Train
     model = Model().LSTMModel
     model.fit(xTrainforLSTM, yTrainforLSTM,
-              epochs=500, batch_size=2400, validation_split=0.4,
+              epochs=100, batch_size=2400, validation_split=0.4,
               verbose=1, shuffle=False)
 
     # # Test
