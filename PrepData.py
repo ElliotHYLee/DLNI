@@ -23,10 +23,11 @@ def rnnData(data, time_steps, isLabel=False):
     return np.array(rnn_df, dtype=np.float32)
 
 def genData():
-    pos = np.zeros(4000)
+    N = 10000
+    pos = np.zeros(N)
     vel = np.zeros_like(pos)
-    for i in range(1, 4000):
-        vel[i] = np.sin(i)*np.cos(i)*i*2
+    for i in range(1, N):
+        vel[i] = np.sin(i*np.pi/180)*i
         pos[i] = pos[i-1] + vel[i]
     x = np.array(vel)
     y = np.array(pos)
@@ -34,8 +35,11 @@ def genData():
 
 def getData():
     x, y = genData()
+    y = x
+    orig_x = x + (np.random.rand(10000)+1)*200
+    orig_x2 = x
     y = np.reshape(y, (-1, 1))
-    ts = 1000
+    ts = 500
     x = pd.DataFrame(x)
     x = rnnData(x, ts)
 
@@ -49,7 +53,7 @@ def getData():
     print xx.shape
     print yy.shape
 
-    return xx, yy
+    return xx, yy, orig_x[ts:], orig_x2[ts:]
 
 if __name__ == '__main__':
     getData()

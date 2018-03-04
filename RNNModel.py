@@ -18,8 +18,8 @@ class Model():
                   recurrent_initializer='orthogonal',
                   activation=LeakyReLU(),
                   return_sequences = False,
-                  input_shape=(1, 1001)))
-        model.add(Dense(10, kernel_initializer="uniform", activation=LeakyReLU()))
+                  input_shape=(1, 501)))
+        #model.add(Dense(10, kernel_initializer="uniform", activation=LeakyReLU()))
         model.add(Dense(1, kernel_initializer="uniform", activation='linear'))
         model.compile(loss='mse', optimizer='adam')
         model.summary()
